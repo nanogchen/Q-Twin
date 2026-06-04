@@ -44,7 +44,7 @@ def get_example_list():
     return []
 
 @st.cache_resource
-def load_universe_web(topo, traj, atom_style_str):
+def load_universe_web(topo, traj, atom_style_str, format_str):
     if topo and traj:
         # MDAnalysis needs file paths, so we save uploaded bytes to temp files
         with tempfile.NamedTemporaryFile(suffix=topo.name, delete=False) as tmp_topo:
@@ -55,8 +55,8 @@ def load_universe_web(topo, traj, atom_style_str):
             tmp_traj.write(traj.getvalue())
             traj_path = tmp_traj.name
         
-        if atom_style_str is not None:
-            return mda.Universe(topo_path, traj_path, atom_style = atom_style_str, format='LAMMPSDUMP')
+        if atom_style_str is not None and format_str is not None:
+            return mda.Universe(topo_path, traj_path, atom_style = atom_style_str, format=format_str)
         else:
             return mda.Universe(topo_path, traj_path)
     return None
@@ -114,8 +114,14 @@ def load_traj():
                 traj_file = st.selectbox("Choose trajectory (XTC/DCD/GRO/DATA/LAMMPSTRAJ) to analyze:", list_files(ex_path))
 
             if topo_file and traj_file:
+                if topo_file.lower().endswith('.data'):
+                    format_str = "DATA"
+                elif topo_file.lower().endswith('.dump'):
+                    format_str = "LAMMPSDUMP"
+                else:
+                    format_str = None
 
-                if traj_file.lower().endswith('lammpstraj') or traj_file.lower().endswith('.dump') or traj_file.lower().endswith('.lammps'):
+                if traj_file.lower().endswith('lammpstraj') or traj_file.lower().endswith('.dump') or traj_file.lower().endswith('.lammps') or traj_file.lower().endswith('.data'):
                     atom_style_str = st.text_input("Atom style for LAMMPS dump file", value="id type x y z", help="LAMMPS dump file format")
                     
                 else:
@@ -127,7 +133,7 @@ def load_traj():
                     if atom_style_str is not None:
                         u = mda.Universe(os.path.join(ex_path, topo_file), 
                                          os.path.join(ex_path, traj_file),
-                                         atom_style = atom_style_str, format='LAMMPSDUMP')
+                                         atom_style = atom_style_str, format=format_str)
                     else:
                         u = mda.Universe(os.path.join(ex_path, topo_file), 
                                          os.path.join(ex_path, traj_file))
@@ -139,7 +145,7 @@ def load_traj():
             st.error("Example files not found in the 'data' directory.")
             
     else:
-        # Manual Upload Mode (your existing code)
+        # Manual Upload Mode
         col1, col2 = st.columns(2)
         with col1:
             topo_file = st.file_uploader("Upload coordinate (PDB/GRO/DATA)", type=['pdb', 'gro', 'data'])
@@ -147,7 +153,14 @@ def load_traj():
             traj_file = st.file_uploader("Upload trajectory (XTC/DCD/GRO/DATA/LAMMPSTRAJ)", type=['xtc', 'dcd', 'gro', 'data', 'lammpstraj', '.dump', '.lammps'])
         
         if topo_file and traj_file:
-            if traj_file.name.lower().endswith('lammpstraj') or traj_file.name.lower().endswith('.dump') or traj_file.name.lower().endswith('.lammps'):
+            if topo_file.lower().endswith('.data'):
+                format_str = "DATA"
+            elif topo_file.lower().endswith('.dump'):
+                format_str = "LAMMPSDUMP"
+            else:
+                format_str = None
+
+            if traj_file.name.lower().endswith('lammpstraj') or traj_file.name.lower().endswith('.dump') or traj_file.name.lower().endswith('.lammps') or traj_file.lower().endswith('.data'):
                 atom_style_str = st.text_input("Atom style for LAMMPS dump file", value="id type x y z", help="LAMMPS dump file format")
             else:
                 atom_style_str = None
@@ -157,7 +170,7 @@ def load_traj():
             st.session_state.input['atom_style'] = atom_style_str
             if st.button("🚀 Load System"):
                 # (Your existing tempfile logic here...)
-                st.session_state.u = load_universe_web(topo_file, traj_file, atom_style_str)
+                st.session_state.u = load_universe_web(topo_file, traj_file, atom_style_str, format_str)
 
     # Display system info if loaded
     if st.session_state.u:
