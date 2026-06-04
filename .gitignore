@@ -1,4 +1,4 @@
 data/*/*.lock
 data/*/*.npz
-gui/__pycache__
+gui/__pycache__/
 */__pycache__/
