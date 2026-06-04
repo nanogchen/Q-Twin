@@ -23,7 +23,7 @@ Switch into the python environment with above packages, then:
 > streamlit run app.py
 
 ### GUI version
-Use the "install-free" version deployed in the cloud 
+Use the "install-free" version deployed in the cloud https://q-twin.streamlit.app/.
 
 ## How to cite
 G. Chen, S. Narayanan, S. K.R.S. Sankaranarayanan. "Q-Twin: The Digital Twin Beamline for Molecular Scattering". In submission (2026).
