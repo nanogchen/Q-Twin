@@ -14,3 +14,6 @@ Switch into the python environment with above packages, then:
 
 ### GUI version
 Use the "install-free" version deployed in the cloud 
+
+## How to cite
+G. Chen, S. Narayanan, S. K.R.S. Sankaranarayanan. "Q-Twin: The Digital Twin Beamline for Molecular Scattering". In submission (2026).
