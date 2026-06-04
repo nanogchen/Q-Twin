@@ -6,8 +6,8 @@ import plotly.graph_objects as go
 import sys
 sys.path.insert(0, "../")
 from gui.fileIO import create_zip_download
-from flames.q_gen import get_binning_averages
-from flames.calc import get_scattering_image
+from srcs.q_gen import get_binning_averages
+from srcs.calc import get_scattering_image
 
 def saxs2d(u):
 

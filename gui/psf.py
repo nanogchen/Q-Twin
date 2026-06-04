@@ -5,8 +5,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 import sys
 sys.path.insert(0, "../")
-from flames.q_gen import get_binning_averages
-from flames.calc import get_sf_decomposition
+from srcs.q_gen import get_binning_averages
+from srcs.calc import get_sf_decomposition
 
 def psf(u):
     st.subheader("Partial structure factors")

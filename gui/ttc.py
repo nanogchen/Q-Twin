@@ -6,8 +6,8 @@ import plotly.graph_objects as go
 import sys
 sys.path.insert(0, "../")
 from gui.fileIO import create_zip_download
-from flames.q_gen import get_binning_averages_ttc
-from flames.calc import get_ttc
+from srcs.q_gen import get_binning_averages_ttc
+from srcs.calc import get_ttc
 
 def ttc(u):    
 

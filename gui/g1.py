@@ -8,8 +8,8 @@ from scipy.optimize import curve_fit,OptimizeWarning
 import sys
 sys.path.insert(0, "../")
 from gui.fileIO import create_zip_download
-from flames.q_gen import get_binning_averages_by_range,filter_q_points_shell
-from flames.calc import get_ISF_corr
+from srcs.q_gen import get_binning_averages_by_range,filter_q_points_shell
+from srcs.calc import get_ISF_corr
 
 # define a single-exp to fit g1
 def single_exp(x, tau):

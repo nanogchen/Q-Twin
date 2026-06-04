@@ -5,8 +5,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 import sys
 sys.path.insert(0, "../")
-from flames.q_gen import get_binning_averages
-from flames.calc import get_static_sf
+from srcs.q_gen import get_binning_averages
+from srcs.calc import get_static_sf
 
 def saxs1d(u):
     st.subheader("1D Scattering Intensity S(q)")
