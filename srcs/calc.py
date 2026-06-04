@@ -25,8 +25,8 @@ from scipy.signal import correlate
 
 import sys
 sys.path.insert(0, "../")
-from flames.q_gen import get_rho_q,get_rho_q_noFF,get_q_points_all_quads,get_binning_averages,get_binning_averages_ttc
-from flames.q_gen import get_q_points_plane,get_q_points_angular_bin
+from srcs.q_gen import get_rho_q,get_rho_q_noFF,get_q_points_all_quads,get_binning_averages,get_binning_averages_ttc
+from srcs.q_gen import get_q_points_plane,get_q_points_angular_bin
 
 def get_static_sf(q_points, system, traj, formfact_all):
 
