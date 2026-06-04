@@ -1,6 +1,10 @@
 # Q-Twin
 A Digital Twin for Molecular Scattering, with a graphical user interface that can be used locally or in the cloud. 
 
+<p align="center" width="70%">
+    <img width="60%" src="schematic.jpg">
+</p>
+
 ## Core Objectives
 * Streamline the extraction of static structure factors and dynamical correlation functions from molecular dynamics trajectories.
 * Capture long-range spatial correlations and collective dynamics in critical phenomena.
