@@ -19,7 +19,7 @@ Main packages used are included in the requirements.txt file and can be installe
 > 
 > (myenv) pip install -r requirements.txt
 
-Switch into the python environment with above packages, then:
+Switch into the python environment with above installation, then launch:
 > streamlit run app.py
 
 ### GUI version
