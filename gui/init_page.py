@@ -31,7 +31,10 @@ def init_page(u):
             st.session_state.q_values = q_points
             st.session_state.input['dq_values'] = float(2*np.pi/L)
 
-            st.success(f"{q_points.shape[0]} wavevectors generated.")
+            if len(q_points) <= 0:
+                st.error(f"Failed to generate wavevectors (0 generated)!")
+            else:
+                st.success(f"{q_points.shape[0]} wavevectors generated.")
 
     with col2:
         st.subheader("Simulation Time")
