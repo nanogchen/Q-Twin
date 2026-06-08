@@ -27,14 +27,14 @@ def saxs1d(u):
     ssf_qr_mean = np.mean(ssf_qr, axis=1)
 
     df = pd.DataFrame({
-        "q_vector": qr[1:],
+        "q": qr[1:],
         "Intensity": ssf_qr_mean[1:]
     })
 
     if df.empty:
         st.warning("No structural information generated at the current selection. Consider changing the q settings.")
     else:
-        fig_saxs = px.line(df, x="q_vector", y="Intensity", 
+        fig_saxs = px.line(df, x="q", y="Intensity", 
             log_x=True, log_y=True, 
             markers=True,
             labels={'x':'q (Å⁻¹)', 'y':'S(q)'}
