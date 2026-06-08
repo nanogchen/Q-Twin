@@ -32,7 +32,7 @@ def saxs1d(u):
     })
 
     if df.empty:
-        st.warning("No structure coordinates match the current selection.")
+        st.warning("No structural information generated at the current selection. Consider changing the q settings.")
     else:
         fig_saxs = px.line(df, x="q_vector", y="Intensity", 
             log_x=True, log_y=True, 
