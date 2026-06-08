@@ -40,15 +40,15 @@ def saxs1d(u):
             labels={'x':'q (Å⁻¹)', 'y':'S(q)'}
             )
 
-    # --- Download Button ---    
-    csv = df.to_csv(index=False).encode('utf-8')
-    st.download_button(
-        label="📥 Download SAXS-1D Data (CSV)",
-        data=csv,
-        file_name="saxs_1d_analysis.csv",
-        mime="text/csv",
-    )
-    st.plotly_chart(fig_saxs, width='content')
+        # --- Download Button ---    
+        csv = df.to_csv(index=False).encode('utf-8')
+        st.download_button(
+            label="📥 Download SAXS-1D Data (CSV)",
+            data=csv,
+            file_name="saxs_1d_analysis.csv",
+            mime="text/csv",
+        )
+        st.plotly_chart(fig_saxs, width='content')
 
     # if st.button("Lorentzian fit"):
     #     fit_params = []
