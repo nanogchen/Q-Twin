@@ -26,17 +26,21 @@ def saxs1d(u):
     qr, ssf_qr = get_binning_averages(num_q_bins, q_end, ssf, q_points)
     ssf_qr_mean = np.mean(ssf_qr, axis=1)
 
-    fig_saxs = px.line(x=qr[1:], y=ssf_qr_mean[1:], 
-        log_x=True, log_y=True, 
-        markers=True,
-        labels={'x':'q (Å⁻¹)', 'y':'S(q)'}
-        )
-
-    # --- Download Button ---
     df = pd.DataFrame({
-        "q_vector": qr,
-        "Intensity": ssf_qr_mean
+        "q_vector": qr[1:],
+        "Intensity": ssf_qr_mean[1:]
     })
+
+    if df.empty:
+        st.warning("No structure coordinates match the current selection.")
+    else:
+        fig_saxs = px.line(df, x="q_vector", y="Intensity", 
+            log_x=True, log_y=True, 
+            markers=True,
+            labels={'x':'q (Å⁻¹)', 'y':'S(q)'}
+            )
+
+    # --- Download Button ---    
     csv = df.to_csv(index=False).encode('utf-8')
     st.download_button(
         label="📥 Download SAXS-1D Data (CSV)",

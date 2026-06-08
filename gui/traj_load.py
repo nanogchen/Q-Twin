@@ -178,6 +178,10 @@ def load_traj():
         st.divider()
         st.subheader("System Summary")
 
+        # box info
+        bx, by, bz = u.dimensions[:3]
+        st.write(f"Box sizes: Lx={bx:.2f}, Ly={by:.2f}, Lz={bz:.2f}")
+
         stats_col1, stats_col2, stats_col3 = st.columns(3)
         stats_col1.metric("Atoms", f"{len(u.atoms):,}")        
         stats_col2.metric("Residues", f"{len(u.residues):,}")        
@@ -208,7 +212,7 @@ def load_traj():
             st.info(", ".join(unique_resnames))
 
         # atom selection
-        st.write("MDAnalysis atom selection examples")
+        st.write("MDAnalysis atom selection examples:")
         st.code('''
 # Select atoms by index (inclusive, 0-based)
 u.select_atoms(\"index 0:5\")\n
