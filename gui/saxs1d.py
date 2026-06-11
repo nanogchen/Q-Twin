@@ -35,10 +35,41 @@ def saxs1d(u):
         st.warning("No structural information generated at the current selection. Consider changing the q settings.")
     else:
         fig_saxs = px.line(df, x="q", y="Intensity", 
-            log_x=True, log_y=True, 
+            # log_x=True, log_y=True, 
             markers=True,
             labels={'x':'q (Å⁻¹)', 'y':'S(q)'}
             )
+
+        # Add the dynamic Updatemenu buttons
+        fig_saxs.update_layout(
+            updatemenus=[
+                dict(
+                    type="buttons",
+                    direction="row",
+                    active=0,  # Which button is active by default (0 = Linear)
+                    x=0.1,     # Horizontal position on chart (0 to 1)
+                    y=1.15,    # Vertical position (above the chart)
+                    buttons=[
+                        dict(
+                            label="Linear Scale",
+                            method="update",
+                            args=[
+                                {}, # No changes to data traces
+                                {"xaxis.type": "linear", "yaxis.type": "linear"} # Set axes to linear
+                            ]
+                        ),
+                        dict(
+                            label="Log-Log Scale",
+                            method="update",
+                            args=[
+                                {}, # No changes to data traces
+                                {"xaxis.type": "log", "yaxis.type": "log"} # Set axes to log
+                            ]
+                        )
+                    ]
+                )
+            ]
+        )
 
         # --- Download Button ---    
         csv = df.to_csv(index=False).encode('utf-8')
