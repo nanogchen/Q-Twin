@@ -5,7 +5,7 @@ A Digital Twin for Molecular Scattering, with a graphical user interface that ca
     <img width="60%" src="schematic.jpg">
 </p>
 
-## Core Objectives
+## Core objectives
 * Streamline the extraction of static structure factors and dynamical correlation functions from molecular dynamics trajectories.
 * Capture long-range spatial correlations and collective dynamics in critical phenomena.
 * Apply the framework across unary and binary liquids utilizing both generic coarse-grained and chemically specific atomistic models.
@@ -26,4 +26,4 @@ Switch into the python environment with above installation, then launch:
 Use the "install-free" version deployed in the cloud https://q-twin.streamlit.app/.
 
 ## How to cite
-G. Chen, S. Narayanan, S. K.R.S. Sankaranarayanan. "Q-Twin: The Digital Twin Beamline for Molecular Scattering". In submission (2026).
+G. Chen, X. Lin, S. Narayanan, S. K.R.S. Sankaranarayanan. "Q-Twin: The Digital Twin Beamline for Molecular Scattering". In submission (2026).
