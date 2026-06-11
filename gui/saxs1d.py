@@ -46,25 +46,25 @@ def saxs1d(u):
                 dict(
                     type="buttons",
                     direction="row",
-                    active=0,  # Which button is active by default (0 = Linear)
-                    x=0.1,     # Horizontal position on chart (0 to 1)
-                    y=1.15,    # Vertical position (above the chart)
+                    active=0,  # 0 = Linear by default
+                    x=0.1,     
+                    y=1.15,    
                     buttons=[
                         dict(
                             label="Linear Scale",
-                            method="update",
-                            args=[
-                                {}, # No changes to data traces
-                                {"xaxis.type": "linear", "yaxis.type": "linear"} # Set axes to linear
-                            ]
+                            method="relayout",  # Use relayout for structural axis modifications
+                            args=[{
+                                "xaxis.type": "linear",
+                                "yaxis.type": "linear"
+                            }]
                         ),
                         dict(
                             label="Log-Log Scale",
-                            method="update",
-                            args=[
-                                {}, # No changes to data traces
-                                {"xaxis.type": "log", "yaxis.type": "log"} # Set axes to log
-                            ]
+                            method="relayout",
+                            args=[{
+                                "xaxis.type": "log",
+                                "yaxis.type": "log"
+                            }]
                         )
                     ]
                 )
