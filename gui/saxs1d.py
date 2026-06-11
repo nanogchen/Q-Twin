@@ -45,7 +45,7 @@ def saxs1d(u):
             updatemenus=[
                 dict(
                     type="buttons",
-                    direction="row",
+                    direction="right",
                     active=0,  # 0 = Linear by default
                     x=0.1,     
                     y=1.15,    
