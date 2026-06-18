@@ -1,5 +1,5 @@
 # Q-Twin
-A Digital Twin for Molecular Scattering, with a graphical user interface that can be used locally or in the cloud. 
+A Digital-Twin Beamline for Molecular Scattering and Coherent Dynamics, with a graphical user interface that can be used locally or in the cloud. 
 
 <p align="center" width="70%">
     <img width="60%" src="schematic.jpg">
@@ -26,4 +26,4 @@ Switch into the python environment with above installation, then launch:
 Use the "install-free" version deployed in the cloud https://q-twin.streamlit.app/.
 
 ## How to cite
-G. Chen, X. Lin, S. Narayanan, S. K.R.S. Sankaranarayanan. "Q-Twin: The Digital Twin Beamline for Molecular Scattering". In submission (2026).
+G. Chen, X. Lin, S. Narayanan, S. K.R.S. Sankaranarayanan. "Q-Twin: A Digital Twin Beamline for Molecular Scattering and Coherent Dynamics". In submission (2026).
