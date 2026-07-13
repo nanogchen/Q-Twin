@@ -8,7 +8,7 @@ A Digital-Twin Beamline for Molecular Scattering and Coherent Dynamics, with a g
 ## Core objectives
 * Streamline the extraction of static structure factors and dynamical correlation functions from molecular dynamics trajectories.
 * Capture long-range spatial correlations and collective dynamics in critical phenomena.
-* Apply the framework across unary and binary liquids utilizing both generic coarse-grained and chemically specific atomistic models.
+* Apply the framework across unary and binary liquids utilizing both generic coarse-grained and chemically realistic models.
 * Enable direct, reciprocal-space comparisons with small-angle scattering and photon correlation spectroscopy experiments.
 
 ## How to use
