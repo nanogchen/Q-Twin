@@ -1,0 +1,6 @@
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [srcs] 

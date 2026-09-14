@@ -34,7 +34,6 @@ jobs:
           # Installs MkDocs, the Material theme, and the docstring parser
           pip install mkdocs-material mkdocstrings[python]
           # Install your local package so mkdocstrings can inspect function objects
-          pip install .
 
       - name: Build documentation
         run: mkdocs build --site-dir site
