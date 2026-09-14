@@ -1,3 +1,8 @@
+site_name: Q-Twin Docs
+
+theme:
+  name: material
+
 plugins:
   - search
   - mkdocstrings:
