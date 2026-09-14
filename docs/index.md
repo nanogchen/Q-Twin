@@ -2,4 +2,5 @@
 
 ## API Reference
 
-::: srcs
+::: calc
+::: q_gen
