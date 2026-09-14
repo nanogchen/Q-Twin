@@ -23,7 +23,7 @@ Switch into the python environment with above installation, then launch:
 > streamlit run app.py
 
 ### GUI version
-Use the "install-free" version deployed in the cloud https://q-twin.streamlit.app/. But note that this free version is limited to up to 2 cores and 1 GB standard RAM memory (with a burst maximum of up to 2.7 GB).
+Use the "install-free" version deployed in the cloud https://q-twin.streamlit.app/. But note that this free version is limited to up to 2 cores and 1 GB standard RAM memory (with a burst maximum of up to 2.7 GB). Only use this for small systems. For production research, use local HPC resources. 
 
 ## How to cite
 G. Chen, X. Lin, S. Narayanan, S. K.R.S. Sankaranarayanan. "Q-Twin: A Digital Twin Beamline for Molecular Scattering and Coherent Dynamics". In submission (2026).
