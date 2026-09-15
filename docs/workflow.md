@@ -7,7 +7,7 @@ The software workflow consists of the following steps:
 3. (q,t) Setup: Specify the parameters of interest for q and time, and select the desired analysis tasks.
 4. Review Outputs: Navigate to the corresponding tabs to review the analysis results. Note that only the selected tasks will be activated and displayed.
 
-### Example
+### Analysis within the GUI
 Here the supercritical Lennard-Jones liquid is used as an example.
 
 <p align="center">
