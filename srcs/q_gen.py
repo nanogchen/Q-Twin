@@ -19,9 +19,9 @@ def get_q_points_plane(box, q_max, plane='xz'):
 	or xy with norm z
 
 	Args:
-		box: np.array, simulation box [bx, by, bz]
-		q_max: float, max q
-		plane: string, scattering plane xy/xz/yz
+		box (np.array): simulation box [bx, by, bz]
+		q_max (float): max q
+		plane (str): scattering plane xy/xz/yz
 	"""
 
 	idx_list=idx_dict[plane]

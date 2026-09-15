@@ -9,6 +9,12 @@ plugins:
       handlers:
         python:
           paths: [srcs] 
+          options:
+            show_root_heading: true       # Displays the module name as a header
+            show_source: true             # Adds collapsible source code dropdowns
+            heading_level: 2              # Keeps sub-functions under H2/H3
+            members_order: source         # Keeps the same order as in your .py file
+            separate_signature: true      # Puts function parameters on clean new lines
 
 nav:
   - Home: index.md
