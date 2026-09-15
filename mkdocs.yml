@@ -19,4 +19,5 @@ plugins:
 nav:
   - Home: index.md
   - Installation & Setup: installation.md
+  - Usage Procedure & Example: workflow.md
   - API Reference: api.md

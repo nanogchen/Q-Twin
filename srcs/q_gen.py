@@ -14,9 +14,7 @@ idx_dict = {"xz":[0,2],
 			}
 
 def get_q_points_plane(box, q_max, plane='xz'):
-	"""
-	construct q-points in a plane: xz with norm-y
-	or xy with norm z
+	"""Construct q-points in a plane: xz with norm-y or xy with norm-z
 
 	Args:
 		box (np.array): simulation box [bx, by, bz]
