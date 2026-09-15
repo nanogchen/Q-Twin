@@ -1,4 +1,4 @@
-site_name: Q-Twin Docs
+site_name: Q-Twin Documentation
 
 theme:
   name: material
@@ -9,3 +9,8 @@ plugins:
       handlers:
         python:
           paths: [srcs] 
+
+nav:
+  - Home: index.md
+  - Installation & Setup: installation.md
+  - API Reference: api.md
