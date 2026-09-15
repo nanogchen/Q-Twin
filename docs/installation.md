@@ -1,7 +1,7 @@
 ## Installation
 
 ```bash
-conda create --name qtwin python=3.14 --file requirements.txt
+conda create --name qtwin --file requirements.txt
 conda activate qtwin
 ```
 
