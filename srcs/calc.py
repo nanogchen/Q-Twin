@@ -26,6 +26,9 @@ def get_static_sf(q_points, system, traj, formfact_all):
 		system (AtomGroup): the selected groups for analysis
 		traj (Universe.trajectory): the whole trajectory
 		formfact_all (np.array): the form factor for the systems [Np] 
+
+	Returns:
+		ssf (np.array): the static structure factor
 	"""
 
 	n_qpoints = len(q_points)
@@ -51,6 +54,11 @@ def get_sf_decomposition(q_points, ag1, ag2, traj):
 		ag1 (AtomGroup): the selected group-1 for analysis
 		ag2 (AtomGroup): the selected group-2 for analysis
 		traj (Universe.trajectory): the whole trajectory
+
+	Returns:
+		SAA (np.array): the partial structure factor SAA
+		SAB (np.array): the partial structure factor SAB
+		SBB (np.array): the partial structure factor SBB
 	"""	
 
 	n_qpoints = len(q_points)
@@ -85,6 +93,13 @@ def get_scattering_image(box, q_max, system, traj, plane='xz'):
 		system (AtomGroup): the selected groups for analysis
 		traj (Universe.trajectory): the whole trajectory
 		plane (str): scattering plane xy/xz/yz
+	
+	Returns:
+		q_points (np.array): the q-points
+		ssf_1d (np.array): the 1d structure factor
+		q1 (np.array): the q-points in the first direction or x
+		q2 (np.array): the q-points in the first direction or z
+		ssf_2d (np.array): the 2d structure factor
 	"""
 
 	q1,q2,q_points = get_q_points_plane(box, q_max, plane)
@@ -119,6 +134,11 @@ def get_ttc(box, q_min, q_max, Nbins, angle_deg, system, traj, formfact_all, pla
 		traj (Universe.trajectory): the whole trajectory
 		formfact_all (np.array): the form factor for the systems [Np] 
 		plane (str): scattering plane xy/xz/yz
+
+	Returns:
+		q_points (np.array): the generated q-points in a plane [Nq, 3]
+		ssf (np.array): the structure factor [Nq, Nt]
+		I_q_t1_t2 (np.array): the two-time correlation [Nq, Nt, Nt]
 	"""		
 
 	# generate q-points
@@ -154,7 +174,10 @@ def get_ISF_corr(q_points, system, traj, formfact_all):
 		q_points (np.array): the wavevectors with dimensions [Nq, 3]	
 		system (AtomGroup): the selected groups for analysis
 		traj (Universe.trajectory): the whole trajectory
-		formfact_all (np.array): the form factor for the systems [Np] 
+		formfact_all (np.array): the form factor for the systems [Np]
+
+	Returns:
+		isf (np.array): the intermediate scattering function [Nq, Nt]
 	"""	
 
 	n_qpoints = len(q_points)
@@ -187,6 +210,9 @@ def order_q_points(q_points, q_max):
 	Args:
 		q_points (np.array): the wavevectors with dimensions [Nq, 3]
 		q_max (float): max q
+
+	Returns:
+		q_points_binned (np.array): the binned and ordered q-points	
 	"""
 
 	factor = math.sqrt(10)
@@ -222,6 +248,10 @@ def binning_local(data_in_q_t, q_points):
 	Args:
 		data_in_q_t (np.array): the data for q-binning [Nq, Nt]
 		q_points (np.array): the wavevectors with dimensions [Nq, 3]
+	
+	Returns:
+		q_bincenters (np.array): the bin centers of the 1-d q
+		averaged_data (np.array): the binned data	
 	"""	
 
 	# do binning
@@ -286,7 +316,6 @@ def fourier_transform_1d(x, fx):
 def fft_dft_symm(Tseq, fTseq):
 	#do Fourier tranformation on the autocorrelation functions, e.g, vel-acf using self-code
 	#This gives the same results as the Filon formula
-
 
 	# symmetrize the input
 	T_symm = symm_func(Tseq)

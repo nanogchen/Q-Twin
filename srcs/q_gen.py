@@ -20,6 +20,11 @@ def get_q_points_plane(box, q_max, plane='xz'):
 		box (np.array): simulation box [bx, by, bz]
 		q_max (float): max q
 		plane (str): scattering plane xy/xz/yz
+
+	Returns:
+		q1 (np.array): the q-points in the first direction or x
+		q2 (np.array): the q-points in the first direction or z
+		q_points (np.array): the generated q-points in a plane
 	"""
 
 	idx_list=idx_dict[plane]
@@ -48,6 +53,9 @@ def get_q_points_ring(box, qmin, qmax, plane):
 		qmin (float): min q
 		qmax (float): max q
 		plane (str): scattering plane xy/xz/yz
+
+	Returns:
+		q_points (np.array): the generated q-points
 	"""
 
 	# in a circle
@@ -75,6 +83,9 @@ def get_q_points_angular_bin(box, qmin, qmax, Nbins, angle_deg, plane):
 		Nbins (int): the number of q-bins along the ring
 		angle_deg (float): the angle of the target bin
 		plane (str): scattering plane xy/xz/yz
+
+	Returns:
+		q_points (np.array): the generated q-points
 	"""
 
 	idx_list=idx_dict[plane]
@@ -103,6 +114,9 @@ def filter_q_points_shell(q_points, qmin, qmax):
 		q_points (np.array): the wavevectors with dimensions [Nq, 3]
 		qmin (float): min q
 		qmax (float): max q
+
+	Returns:
+		q_points (np.array): the generated q-points
 	"""
 
 	q_dist = np.linalg.norm(q_points, axis=1)
@@ -129,6 +143,9 @@ def get_rho_q(x, q, formfact_all):
 		x (np.array): the coordinates of the system [Np, 3]
 		q (np.array): the wavevectors with dimensions [Nq, 3]
 		formfact_all (np.array): the form factor for the systems [Np]
+
+	Returns:
+		rho_q (np.array): the density field
 	"""
 
 	Nx = len(x)
@@ -155,6 +172,9 @@ def get_rho_q_noFF(x, q):
 	Args:
 		x (np.array): the coordinates of the system [Np, 3]
 		q (np.array): the wavevectors with dimensions [Nq, 3]
+	
+	Returns:
+		rho_q (np.array): the density field	
 	"""
 
 	Nx = len(x)
@@ -213,6 +233,9 @@ def get_q_points_all_quads(box, q_max, max_points, seed=42):
 		q_max (float): max q
 		max_points (int): the maximum number of q-points
 		seed (int): the seed for the q-points sampling
+
+	Returns:
+		q_points (np.array): the generated q-points
 	"""
 
 	dq = np.diagflat(2*np.pi/box)
@@ -257,6 +280,10 @@ def get_binning_averages(num_q_bins, q_end, data_in_q_t, q_points):
 		q_end (float): max q
 		data_in_q_t (np.array): the data for q-binning [Nq, Nt]
 		q_points (np.array): the q-points
+
+	Returns:
+		q_bincenters (np.array): the bin centers of the 1-d q
+		averaged_data (np.array): the binned data
 	"""
 
 	# do binning
@@ -295,6 +322,10 @@ def get_binning_averages_by_range(num_q_bins, q_min, q_max, data_in_q_t, q_point
 		q_max (float): max q
 		data_in_q_t (np.array): the data for q-binning [Nq, Nt]
 		q_points (np.array): the q-points
+
+	Returns:
+		q_bincenters (np.array): the bin centers of the 1-d q
+		averaged_data (np.array): the binned data
 	"""	
 
 	# do binning
@@ -332,6 +363,10 @@ def get_binning_averages_ttc(q_points, ssf, I_q_t1_t2, form="G"):
 		ssf (np.array): the static structure factor [Nq, Nt]
 		I_q_t1_t2 (np.array): the two-time correlation function [Nq, Nt, Nt]
 		form (str): the form of binning average
+
+	Returns:
+		q_bincenters (np.array): the bin centers of the 1-d q
+		averaged_c2 (np.array): the binned two-time correlation		
 	"""	
 	Nframes = I_q_t1_t2.shape[1]
 
