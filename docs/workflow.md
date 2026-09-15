@@ -10,19 +10,19 @@ The software workflow consists of the following steps:
 ### Example
 Here the supercritical Lennard-Jones liquid is used as an example.
 
-#### Load the trajectory
-<p align="center" width="70%">
-    <img width="60%" src="assets/step1.jpg">
+Load the trajectory
+<p align="center">
+    <img width="100%" src="assets/step1.jpg">
 </p>
 
-#### Set the (q,t) and tasks
-<p align="center" width="70%">
-    <img width="60%" src="assets/step2.jpg">
+Set the (q,t) and tasks
+<p align="center">
+    <img width="100%" src="assets/step2.jpg">
 </p>
 
-#### Results review and data download
-<p align="center" width="70%">
-    <img width="60%" src="assets/step3.jpg">
+Results review and data download
+<p align="center">
+    <img width="100%" src="assets/step3.jpg">
 </p>
 
 ### Command line usage
