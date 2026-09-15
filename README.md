@@ -12,12 +12,12 @@ A Digital-Twin Beamline for Molecular Scattering and Coherent Dynamics, with a g
 * Enable direct, reciprocal-space comparisons with small-angle scattering and photon correlation spectroscopy experiments.
 
 ## How to use
+For detailed installation and usage instructions, please refer to the `Q-Twin` [documentation](https://nanogchen.github.io/Q-Twin/). A brief overview of the steps is provided below.
 
 ### Local mode
-Main packages used are included in the requirements.txt file and can be installed by one of the following ways:
-> (myenv) conda install --file requirements.txt
-> 
-> (myenv) pip install -r requirements.txt
+Main packages used are included in the requirements.txt file and can be installed by:
+> conda create --name qtwin --file requirements.txt
+> conda activate qtwin
 
 Switch into the python environment with above installation, then launch:
 > streamlit run app.py
@@ -31,5 +31,5 @@ G. Chen, X. Lin, S. Narayanan, S. K.R.S. Sankaranarayanan. "Q-Twin: A Digital Tw
 ## Documentation and User Guide
 Please refer to the [documentation](https://nanogchen.github.io/Q-Twin/) and user guide of the code. 
 
-## Seek help or new features
+## Seek new features or bug reports
 Open an [issue](https://github.com/nanogchen/Q-Twin/issues)!
