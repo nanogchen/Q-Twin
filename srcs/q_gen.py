@@ -1,17 +1,7 @@
 # 
 # Copyright (C) Guang Chen et al.
 # 
-# This file is part of FLAMES program
-#
-# FLAMES is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# FLAMES is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+# This file is part of Q-Twin program
 #
 
 import itertools
@@ -27,6 +17,9 @@ def get_q_points_plane(box, q_max, plane='xz'):
 	"""
 	construct q-points in a plane: xz with norm-y
 	or xy with norm z
+	box: np.array, simulation box [bx, by, bz]
+	q_max: float, max q
+	plane: string, scattering plane xy/xz/yz
 	"""
 
 	idx_list=idx_dict[plane]
