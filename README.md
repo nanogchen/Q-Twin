@@ -27,3 +27,9 @@ Use the "install-free" version deployed in the cloud https://q-twin.streamlit.ap
 
 ## How to cite
 G. Chen, X. Lin, S. Narayanan, S. K.R.S. Sankaranarayanan. "Q-Twin: A Digital Twin Beamline for Molecular Scattering and Coherent Dynamics". In submission (2026).
+
+## Documentation and User Guide
+Please refer to the [documentation](https://nanogchen.github.io/Q-Twin/) and user guide of the code. 
+
+## Seek help or new features
+Open an [issue](https://github.com/nanogchen/Q-Twin/issues)!
