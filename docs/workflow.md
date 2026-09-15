@@ -13,11 +13,14 @@ Here the supercritical Lennard-Jones liquid is used as an example.
 <p align="center">
     <img width="100%" src="../assets/step1.jpg" alt="Load the trajectory">
 </p>
+<p align="center"><em>Trajectory loading for the Q-Twin analysis.</em></p>
 
 <p align="center">
     <img width="100%" src="../assets/step2.jpg" alt="Set the (q,t) and tasks">
 </p>
-Note for demonstration, the following parameters were used:
+<p align="center"><em>Set the (q,t) and tasks for the Q-Twin analysis.</em></p>
+
+For demonstration, the following parameters were used:
 ```json
 {
     "topo_file": "unary_scf.data",
@@ -30,7 +33,7 @@ Note for demonstration, the following parameters were used:
     "frame_end": 1,
     "frame_step": 10, 
     "traj_dt": 1.0,
-    "tasks": SAXS-1D
+    "tasks": "SAXS-1D",
 }
 ```
 Note that the analysis was done for a single frame. Large uncertainty is expected. To get better statistics, use more frames for averages (e.g., 500 frames).
@@ -38,6 +41,7 @@ Note that the analysis was done for a single frame. Large uncertainty is expecte
 <p align="center">
     <img width="100%" src="../assets/step3.jpg" alt="Results view and data download">
 </p>
+<p align="center"><em>Results view and data download of the Q-Twin analysis.</em></p>
 
 ### Command line usage
 
