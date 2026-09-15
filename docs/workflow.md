@@ -46,7 +46,7 @@ Note that the demonstration shown here was performed using a single frame, so re
 ### Command line usage
 To facilitate autonomous analysis of multiple systems, the analysis can be performed from the command line or within a Bash/Python script. Here, the same example is used to demonstrate the command-line workflow.
 
-The example script, test.py, is shown below. The file is located under Q-Twin/examples/.
+The example script, cml_test.py, is shown below. The file is located under Q-Twin/examples/.
 ```python
 import sys
 import numpy as np
@@ -79,13 +79,13 @@ if __name__ == '__main__':
 	ssf = get_static_sf(q_points, system, u.trajectory[Fr_start:Fr_stop+1:Fr_step], formfact_all)
 	qr, ssf_qr = get_binning_averages(num_q_bins, q_end, ssf, q_points)
 
-	# # save
-	# np.save("qr.npy", qr)
-	# np.save("ssf_qr.npy", ssf_qr)
+	# save
+	np.savetxt("qr.txt", qr)
+	np.savetxt("ssf_qr.txt", ssf_qr)
 ```
 
 Then in a command line:
 ```bash
 conda activate qtwin
-(qtwin) python test.py
+(qtwin) python cml_test.py
 ```

@@ -2,5 +2,5 @@
 A Digital-Twin Beamline for Molecular Scattering and Coherent Dynamics, with a graphical user interface that can be used locally or in the cloud.
 
 <p align="center" width="70%">
-    <img width="60%" src="assets/schematic.jpg">
+    <img width="80%" src="assets/schematic.jpg">
 </p>
