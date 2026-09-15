@@ -36,7 +36,7 @@ For demonstration, the following parameters were used:
     "tasks": "SAXS-1D",
 }
 ```
-Note that the analysis was done for a single frame. Large uncertainty is expected. To get better statistics, use more frames for averages (e.g., 500 frames).
+Note that the demonstration shown here was performed using a single frame, so relatively large statistical uncertainties are expected. For more reliable statistics, use a larger number of frames for averaging (e.g., 500 frames). For dynamic analysis, multiple frames are required to obtain meaningful statistics.
 
 <p align="center">
     <img width="100%" src="../assets/step3.jpg" alt="Results view and data download">
