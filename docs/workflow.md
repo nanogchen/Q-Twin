@@ -12,17 +12,17 @@ Here the supercritical Lennard-Jones liquid is used as an example.
 
 Load the trajectory
 <p align="center">
-    <img width="100%" src="assets/step1.jpg">
+    <img width="100%" src="../assets/step1.jpg">
 </p>
 
 Set the (q,t) and tasks
 <p align="center">
-    <img width="100%" src="assets/step2.jpg">
+    <img width="100%" src="../assets/step2.jpg">
 </p>
 
 Results review and data download
 <p align="center">
-    <img width="100%" src="assets/step3.jpg">
+    <img width="100%" src="../assets/step3.jpg">
 </p>
 
 ### Command line usage
