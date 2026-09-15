@@ -47,42 +47,10 @@ Note that the demonstration shown here was performed using a single frame, so re
 To facilitate autonomous analysis of multiple systems, the analysis can be performed from the command line or within a Bash/Python script. Here, the same example is used to demonstrate the command-line workflow.
 
 The example script, cml_test.py, is shown below. The file is located under Q-Twin/examples/.
-```python
-import sys
-import numpy as np
-import MDAnalysis as mda
-
-sys.path.insert(0, "../")
-from srcs.q_gen import get_q_points_all_quads, get_binning_averages
-from srcs.calc import get_static_sf
-
-# -----------------------------------------------------------------------------
-
-if __name__ == '__main__':
-
-	u = mda.Universe("unary_scf.data", format="DATA", atom_style="id type x y z")
-	system = u.select_atoms("all")
-	bx,by,bz=u.dimensions[:3]
-	n_atoms = len(system.atoms)
-	formfact_all = np.ones(n_atoms)
-	
-	# lj liquids
-	q_end = 15.0
-	max_points = 1500
-	num_q_bins = 15
-	Fr_start = 0
-	Fr_stop = 1
-	Fr_step = 1
-
-	# gen q-points and calculate structure factor
-	q_points = get_q_points_all_quads(np.array([bx, by, bz]), q_end, max_points=max_points)
-	ssf = get_static_sf(q_points, system, u.trajectory[Fr_start:Fr_stop+1:Fr_step], formfact_all)
-	qr, ssf_qr = get_binning_averages(num_q_bins, q_end, ssf, q_points)
-
-	# save
-	np.savetxt("qr.txt", qr)
-	np.savetxt("ssf_qr.txt", ssf_qr)
+```python title="examples/cml_test.py" linenums="1"
+--8<-- "examples/cml_test.py"
 ```
+<!-- Include only specific line numbers: "examples/test.py:10:35"-->
 
 Then in a command line:
 ```bash
