@@ -16,7 +16,7 @@ For detailed installation and usage instructions, please refer to the `Q-Twin` [
 
 ### Local mode
 Main packages used are included in the requirements.txt file and can be installed by:
-> conda create --name qtwin --file requirements.txt
+> conda create --name qtwin --file requirements.txt  
 > conda activate qtwin
 
 Switch into the python environment with above installation, then launch:
