@@ -44,11 +44,10 @@ Note that the demonstration shown here was performed using a single frame, so re
 <p align="center"><em>Results view and data download of the Q-Twin analysis.</em></p>
 
 ### Command line usage
-To facillitate autonomous analysis for multiple systems, it is desired to apply the analysis in a command line or in a bash/python script. Here the same example was applied to show the command line usage.
+To facilitate autonomous analysis of multiple systems, the analysis can be performed from the command line or within a Bash/Python script. Here, the same example is used to demonstrate the command-line workflow.
 
-The example test.py is shown below.
+The example script, test.py, is shown below. The file is located under Q-Twin/examples/.
 ```python
-# named test.py placed under Q-Twin/examples
 import sys
 import numpy as np
 import MDAnalysis as mda
@@ -85,7 +84,7 @@ if __name__ == '__main__':
 	# np.save("ssf_qr.npy", ssf_qr)
 ```
 
-Then in command line:
+Then in a command line:
 ```bash
 conda activate qtwin
 (qtwin) python test.py

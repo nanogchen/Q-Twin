@@ -10,3 +10,5 @@ Basic Usage
 # load the platform locally
 streamlit run app.py
 ```
+
+For a tutorial on loading trajectories, performing analyses, and running the analysis from the command line, see the [Usage Procedure & Examples](../workflow) section.
