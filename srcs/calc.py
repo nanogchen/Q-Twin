@@ -1,17 +1,7 @@
 # 
 # Copyright (C) Guang Chen et al.
 # 
-# This file is part of FLAMES program
-#
-# FLAMES is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# FLAMES is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+# This file is part of Q-Twin program
 #
 
 import math
@@ -29,10 +19,15 @@ from srcs.q_gen import get_rho_q,get_rho_q_noFF,get_q_points_all_quads,get_binni
 from srcs.q_gen import get_q_points_plane,get_q_points_angular_bin
 
 def get_static_sf(q_points, system, traj, formfact_all):
+	"""get the static structur factor [Nq, Nt] from the given trajectory for selected groups
 
+	Args:
+		q_points (np.array): the wavevectors with dimensions [Nq, 3]
+		system (AtomGroup): the selected groups for analysis
+		traj (Universe.trajectory): the whole trajectory
+		formfact_all (np.array): the form factor for the systems [Np] 
 	"""
-	get static structure factor S(q_vec, t) at given time.
-	"""
+
 	n_qpoints = len(q_points)
 	ssf = np.zeros((n_qpoints, len(traj)))
 
@@ -49,10 +44,14 @@ def get_static_sf(q_points, system, traj, formfact_all):
 	return ssf/(np.sum(formfact_all**2))
 
 def get_sf_decomposition(q_points, ag1, ag2, traj):
-	"""
-	get decomposition of the static structure factor
-	note: no manual-set form factor is used here!
-	"""
+	"""get the decomposition of the static structure factor [Nq, Nt] from the given trajectory for selected groups
+
+	Args:
+		q_points (np.array): the wavevectors with dimensions [Nq, 3]
+		ag1 (AtomGroup): the selected group-1 for analysis
+		ag2 (AtomGroup): the selected group-2 for analysis
+		traj (Universe.trajectory): the whole trajectory
+	"""	
 
 	n_qpoints = len(q_points)
 	sf_AA = np.zeros((n_qpoints, len(traj)))
@@ -78,8 +77,14 @@ def get_sf_decomposition(q_points, ag1, ag2, traj):
 	return sf_AA/Natoms, 0.5*sf_AB/Natoms, sf_BB/Natoms
 
 def get_scattering_image(box, q_max, system, traj, plane='xz'):
-	"""
-	construct q-points in a plane
+	"""get the 1d and 2d static structur factor from the given trajectory for selected groups in a plane
+
+	Args:
+		box (np.array): simulation box [bx, by, bz]
+		q_max (float): max q
+		system (AtomGroup): the selected groups for analysis
+		traj (Universe.trajectory): the whole trajectory
+		plane (str): scattering plane xy/xz/yz
 	"""
 
 	q1,q2,q_points = get_q_points_plane(box, q_max, plane)
@@ -102,8 +107,18 @@ def get_scattering_image(box, q_max, system, traj, plane='xz'):
 	return q_points, ssf_1d, q1, q2, ssf_2d
 
 def get_ttc(box, q_min, q_max, Nbins, angle_deg, system, traj, formfact_all, plane='xz'):
-	"""
-	get two-time correlation C(q,t1,t2).
+	"""get the two-time correlation function C(q,t1,t2) [Nq, Nt, Nt] from the given trajectory for selected groups
+
+	Args:
+		box (np.array): simulation box [bx, by, bz]
+		q_min (float): min q
+		q_max (float): max q
+		Nbins (int): the number of q-bins along the ring
+		angle_deg (float): the angle of the target bin
+		system (AtomGroup): the selected groups for analysis
+		traj (Universe.trajectory): the whole trajectory
+		formfact_all (np.array): the form factor for the systems [Np] 
+		plane (str): scattering plane xy/xz/yz
 	"""		
 
 	# generate q-points
@@ -133,10 +148,14 @@ def get_ttc(box, q_min, q_max, Nbins, angle_deg, system, traj, formfact_all, pla
 	return q_points, ssf, I_q_t1_t2
 
 def get_ISF_corr(q_points, system, traj, formfact_all):
+	"""get the intermediate scattering function [Nq, Nt] from the given trajectory for selected groups
 
-	"""
-	get the ISF using autocorrlation function of density field
-	"""
+	Args:
+		q_points (np.array): the wavevectors with dimensions [Nq, 3]	
+		system (AtomGroup): the selected groups for analysis
+		traj (Universe.trajectory): the whole trajectory
+		formfact_all (np.array): the form factor for the systems [Np] 
+	"""	
 
 	n_qpoints = len(q_points)
 	rho_qt = np.zeros(shape=(n_qpoints, len(traj)), dtype=np.complex128)
@@ -163,8 +182,11 @@ def get_ISF_corr(q_points, system, traj, formfact_all):
 	return isf/(np.sum(formfact_all**2))
 
 def order_q_points(q_points, q_max):
-	"""
-	order q by norm
+	"""Order q-points by the norm
+	
+	Args:
+		q_points (np.array): the wavevectors with dimensions [Nq, 3]
+		q_max (float): max q
 	"""
 
 	factor = math.sqrt(10)
@@ -195,7 +217,12 @@ def order_q_points(q_points, q_max):
 	return q_points_binned
 
 def binning_local(data_in_q_t, q_points):
-	""" get function of q_norm by binning for selective q-range"""
+	"""Get the q-averaged data for selective q-range
+	
+	Args:
+		data_in_q_t (np.array): the data for q-binning [Nq, Nt]
+		q_points (np.array): the wavevectors with dimensions [Nq, 3]
+	"""	
 
 	# do binning
 	Nframes = data_in_q_t.shape[1]
@@ -231,7 +258,7 @@ def binning_local(data_in_q_t, q_points):
 	return q_bincenters, averaged_data
 
 def symm_func(t, inverse=True):
-	"""symmetric a sequence"""
+	#symmetric a sequence
 
 	if inverse:
 		t_ = t[::-1]*(-1)
@@ -244,6 +271,7 @@ def symm_func(t, inverse=True):
 	return np.array(t_)
 
 def fourier_transform_1d(x, fx):
+	#1d fourier transform 
 	x0, dx = x[0], x[1] - x[0]
 	g = np.fft.fft(fx) # DFT calculation
 	
@@ -256,9 +284,9 @@ def fourier_transform_1d(x, fx):
 	return w,g
 
 def fft_dft_symm(Tseq, fTseq):
-	"""do Fourier tranformation on the autocorrelation functions, e.g, vel-acf using self-code
-	This gives the same results as the Filon formula
-	"""
+	#do Fourier tranformation on the autocorrelation functions, e.g, vel-acf using self-code
+	#This gives the same results as the Filon formula
+
 
 	# symmetrize the input
 	T_symm = symm_func(Tseq)
