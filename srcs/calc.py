@@ -118,6 +118,7 @@ def get_scattering_image(box, q_max, system, traj, plane='xz'):
 		ssf = np.real(rho_q*rho_q.conjugate()) / coords.shape[0] # 1/N
 		ssf_1d[:, ifr] = ssf
 		ssf_2d[:, :, ifr] = np.reshape(ssf, (q1.shape[0], q2.shape[0]))
+		ifr+=1
 
 	return q_points, ssf_1d, q1, q2, ssf_2d
 
