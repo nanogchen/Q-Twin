@@ -98,7 +98,8 @@ def load_traj():
     # Toggle for Example Mode
     # use_example = st.toggle("💡 Use Example Trajectory", value=False)
     mode = st.radio("Select Data Source:", ["Manual Upload", "Pre-installed Examples"], horizontal=True)
-    
+    lmp_traj = ('.dump', '.lammpstraj', '.lammps')
+
     if mode == "Pre-installed Examples":
         examples = get_example_list()
 
@@ -115,32 +116,42 @@ def load_traj():
 
             if topo_file and traj_file:
                 if topo_file.lower().endswith('.data') and traj_file.lower().endswith('.data'):
+                    st.warning("Topology file and trajectory files cannot be both data file. Will use data file only")
                     topology_format_str = "DATA"
-                elif topo_file.lower().endswith('.dump'):
+                    format_str = "DATA"
+                elif topo_file.lower().endswith('.data') and traj_file.lower().endswith(lmp_traj):
+                    topology_format_str = "DATA"
                     format_str = "LAMMPSDUMP"
-                elif topo_file.lower().endswith('.dump') and traj_file.lower().endswith('.dump'):
-                    st.warning("Topology file and trajectory files cannot be both dump file.")
+                elif topo_file.lower().endswith('.dump') and traj_file.lower().endswith(lmp_traj):
+                    st.warning("Topology file and trajectory files cannot be both dump file. Will use dump file only")
+                    topology_format_str = None
+                    format_str = "LAMMPSDUMP"
                 else:
+                    # st.error("Missing typical file types in this data folder.")
+                    # other format: gro etc.
                     format_str = None
                     topology_format_str = None
 
-                if traj_file.lower().endswith('lammpstraj') or traj_file.lower().endswith('.dump') or traj_file.lower().endswith('.lammps') or traj_file.lower().endswith('.data'):
-                    atom_style_str = st.text_input("Atom style for LAMMPS dump file", value="id type x y z", help="LAMMPS dump file format")
-                    format_str = "LAMMPSDUMP"
+                if topo_file.lower().endswith('.data') or traj_file.lower().endswith(lmp_traj):
+                    atom_style_str = st.text_input("Atom style for LAMMPS dump/data file", value="id type x y z", help="LAMMPS dump/data file format")
                 else:
                     atom_style_str = None
                 
                 st.session_state.input['topo_file'] = topo_file
                 st.session_state.input['traj_file'] = traj_file
                 if st.button("🚀 Load Example"):
-                    if atom_style_str is not None:
+                    if format_str is not None: # lmp
                         u = mda.Universe(os.path.join(ex_path, topo_file), 
                                          os.path.join(ex_path, traj_file),
-                                         atom_style = atom_style_str, format=format_str, topology_format=topology_format_str)
-                    else:
+                                         atom_style = atom_style_str, 
+                                         format=format_str, 
+                                         topology_format=topology_format_str)
+                    else: # other than lmp
                         u = mda.Universe(os.path.join(ex_path, topo_file), 
                                          os.path.join(ex_path, traj_file),
-                                         format=format_str, topology_format=topology_format_str)
+                                         atom_style = atom_style_str, 
+                                         format=topology_format_str, 
+                                         topology_format=topology_format_str)
                     st.session_state.u = u
                     st.success(f"Example files successfully loaded!")
             else:
@@ -157,17 +168,24 @@ def load_traj():
             traj_file = st.file_uploader("Upload trajectory (XTC/DCD/GRO/DATA/LAMMPSTRAJ)", type=['xtc', 'dcd', 'gro', 'data', 'lammpstraj', '.dump', '.lammps'])
         
         if topo_file and traj_file:
-            if topo_file.lower().endswith('.data'):
+            if topo_file.name.lower().endswith('.data') and traj_file.name.lower().endswith('.data'):
+                st.warning("Topology file and trajectory files cannot be both data file. Will use data file only")
                 topology_format_str = "DATA"
-            elif topo_file.lower().endswith('.dump'):
+                format_str = "DATA"
+            elif topo_file.name.lower().endswith('.data') and traj_file.name.lower().endswith(lmp_traj):
+                topology_format_str = "DATA"
                 format_str = "LAMMPSDUMP"
-            elif topo_file.lower().endswith('.dump') and traj_file.lower().endswith('.dump'):
-                st.warning("Topology file and trajectory files cannot be both dump file.")
+            elif topo_file.name.lower().endswith('.dump') and traj_file.name.lower().endswith(lmp_traj):
+                st.warning("Topology file and trajectory files cannot be both dump file. Will use dump file only")
+                topology_format_str = None
+                format_str = "LAMMPSDUMP"
             else:
+                # st.error("Missing typical file types in this data folder.")
+                # other format: gro etc.
                 format_str = None
                 topology_format_str = None
 
-            if traj_file.name.lower().endswith('lammpstraj') or traj_file.name.lower().endswith('.dump') or traj_file.name.lower().endswith('.lammps') or traj_file.lower().endswith('.data'):
+            if topo_file.name.lower().endswith('.data') or traj_file.name.lower().endswith(lmp_traj):
                 atom_style_str = st.text_input("Atom style for LAMMPS dump file", value="id type x y z", help="LAMMPS dump file format")
             else:
                 atom_style_str = None
@@ -177,7 +195,7 @@ def load_traj():
             st.session_state.input['atom_style'] = atom_style_str
             if st.button("🚀 Load System"):
                 # (Your existing tempfile logic here...)
-                st.session_state.u = load_universe_web(topo_file, traj_file, atom_style_str, format=format_str, topology_format=topology_format_str)
+                st.session_state.u = load_universe_web(topo_file, traj_file, atom_style_str, format_str, topology_format_str)
 
     # Display system info if loaded
     if st.session_state.u:
@@ -208,10 +226,17 @@ def load_traj():
             st.info(", ".join(unique_names))
 
         if hasattr(u.atoms, 'types'):
-            unique_names = np.unique(u.atoms.types)
+            try: # if types are numbers
+                unique_names = np.unique(u.atoms.types).astype(float).astype(int).astype(str)
 
-            st.write("Atom Types")
-            st.info(", ".join(unique_names))
+                st.write("Atom Types")
+                st.info(", ".join(unique_names))
+
+            except (ValueError, TypeError): # types are strings
+                unique_names = np.unique(u.atoms.types)
+
+                st.write("Atom Types")
+                st.info(", ".join(unique_names))
 
         if hasattr(u.atoms, 'resnames'):
             unique_resnames = np.unique(u.atoms.resnames) 
