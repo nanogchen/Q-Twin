@@ -7,7 +7,7 @@ The software workflow consists of the following steps:
 3. (q,t) Setup: Specify the parameters of interest for q and time, and select the desired analysis tasks.
 4. Review Outputs: Navigate to the corresponding tabs to review the analysis results. Note that only the selected tasks will be activated and displayed.
 
-### Analysis within the GUI
+### 1. Analysis within the GUI
 Here the supercritical Lennard-Jones liquid is used as an example.
 
 <p align="center">
@@ -43,7 +43,7 @@ Note that the demonstration shown here was performed using a single frame, so re
 </p>
 <p align="center"><em>Results view and data download of the Q-Twin analysis.</em></p>
 
-### Command line usage
+### 2. Command line usage
 To facilitate autonomous analysis of multiple systems, the analysis can be performed from the command line or within a Bash/Python script. Here, the same example is used to demonstrate the command-line workflow.
 
 The example script, cml_test.py, is shown below. The file is located under Q-Twin/examples/.
