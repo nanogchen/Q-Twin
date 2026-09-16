@@ -107,6 +107,55 @@ def get_q_points_angular_bin(box, qmin, qmax, Nbins, angle_deg, plane):
 
 	return q_points
 
+def get_q_points_on_two_bin(q_points, qTarget=7.6, dq=0.4, dtheta=10, plane='xz'):
+	"""Construct q-points in two angular bins (0 and 90 degree) along a ring: xz with norm-y or xy with norm-z
+
+	Args:
+		q_points (np.array): the raw q-points in the plane
+		qTarget (float): the target wavenumber
+		dq (float): the bin step for q-points selection
+		dtheta (float): the angle step for q-points selection
+		plane (str): scattering plane xy/xz/yz
+
+	Returns:
+		q_points_x (np.array): the q-points in the 0-direction
+		q_points_y (np.array): the q-points in the 90-direction
+	"""
+
+	idx_list=idx_dict[plane]
+
+	q_norms = np.linalg.norm(q_points, axis=1)
+	q_indices = np.where(np.abs(q_norms - qTarget) <= dq)[0]
+
+	# selection by norm
+	q_points_norm2d = q_points[q_indices]
+	q_points_2d = q_points_norm2d[:, idx_list]
+
+	# selection by direction (on a plane)
+	q_list_x = []
+	q_list_y = []
+
+	for iq in q_points_2d:
+		# along x: cos
+		costheta = iq[0] / np.linalg.norm(iq)
+		if costheta >= np.cos(dtheta/180.0*np.pi):
+			q_list_x.append(iq)
+
+		# along y: sin
+		sintheta = iq[1] / np.linalg.norm(iq) 
+		if sintheta >= np.sin(0.5*np.pi - dtheta/180.0*np.pi):
+			q_list_y.append(iq)
+
+	# return it in 3d
+	q_list_x = np.array(q_list_x)
+	q_list_y = np.array(q_list_y)
+	q_points_x = np.zeros((q_list_x.shape[0], 3))
+	q_points_x[:, idx_list] = q_list_x
+	q_points_y = np.zeros((q_list_y.shape[0], 3))
+	q_points_y[:, idx_list] = q_list_y
+
+	return q_points_x, q_points_y
+
 def filter_q_points_shell(q_points, qmin, qmax):
 	"""filter q-points in a 3-d shell by a q-range
 
