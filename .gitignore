@@ -2,3 +2,5 @@ data/*/*.lock
 data/*/*.npz
 gui/__pycache__/
 */__pycache__/
+examples/data/*
+examples/figs/*
