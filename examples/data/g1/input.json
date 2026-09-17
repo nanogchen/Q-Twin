@@ -1,6 +1,6 @@
 {
     "topo_file": "unary_liquid.data",
-    "traj_file": "unary_liquid.lammpstraj", // dynamics_xvfpe folder
+    "traj_file": "unary_liquid.lammpstraj", 
     "length_unit": "LJ",
     "q_end": 15.0,
     "max_q_points": 1500,
