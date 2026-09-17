@@ -107,8 +107,8 @@ def get_q_points_angular_bin(box, qmin, qmax, Nbins, angle_deg, plane):
 
 	return q_points
 
-def get_q_points_on_two_bin(q_points, qTarget=7.6, dq=0.4, dtheta=10, plane='xz'):
-	"""Construct q-points in two angular bins (0 and 90 degree) along a ring: xz with norm-y or xy with norm-z
+def get_q_points_on_principal_axis(q_points, qTarget=7.6, dq=0.4, dtheta=10, plane='xz'):
+	"""Construct q-points in two principal bins (0 and 90 degree) along a ring: xz with norm-y or xy with norm-z
 
 	Args:
 		q_points (np.array): the raw q-points in the plane

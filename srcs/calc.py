@@ -122,28 +122,20 @@ def get_scattering_image(box, q_max, system, traj, plane='xz'):
 
 	return q_points, ssf_1d, q1, q2, ssf_2d
 
-def get_ttc(box, q_min, q_max, Nbins, angle_deg, system, traj, formfact_all, plane='xz'):
+def get_ttc(q_points, system, traj, formfact_all, unit_conv=1.0):
 	"""get the two-time correlation function C(q,t1,t2) [Nq, Nt, Nt] from the given trajectory for selected groups
 
 	Args:
-		box (np.array): simulation box [bx, by, bz]
-		q_min (float): min q
-		q_max (float): max q
-		Nbins (int): the number of q-bins along the ring
-		angle_deg (float): the angle of the target bin
+		q_points (np.array): the q-points [Nq, 3]
 		system (AtomGroup): the selected groups for analysis
 		traj (Universe.trajectory): the whole trajectory
-		formfact_all (np.array): the form factor for the systems [Np] 
-		plane (str): scattering plane xy/xz/yz
+		formfact_all (np.array): the form factor for the systems [Np]
+		unit_conv (float): unit conversion factor
 
-	Returns:
-		q_points (np.array): the generated q-points in a plane [Nq, 3]
+	Returns:		
 		ssf (np.array): the structure factor [Nq, Nt]
 		I_q_t1_t2 (np.array): the two-time correlation [Nq, Nt, Nt]
 	"""		
-
-	# generate q-points
-	q_points = get_q_points_angular_bin(box, q_min, q_max, Nbins, angle_deg, plane)
 
 	# first get s(q,t)
 	n_qpoints = len(q_points)
@@ -154,7 +146,7 @@ def get_ttc(box, q_min, q_max, Nbins, angle_deg, system, traj, formfact_all, pla
 	ifr=0    
 	for _ in traj:
 
-		coords = system.positions
+		coords = system.positions / unit_conv
 		rho_q = get_rho_q(coords, q_points, formfact_all)
 		sq_t = np.real(rho_q*rho_q.conjugate()) 
 
@@ -166,7 +158,7 @@ def get_ttc(box, q_min, q_max, Nbins, angle_deg, system, traj, formfact_all, pla
 	for iq in prange(n_qpoints):
 		I_q_t1_t2[iq] = np.outer(ssf[iq],ssf[iq])
 	
-	return q_points, ssf, I_q_t1_t2
+	return ssf, I_q_t1_t2
 
 def get_ISF_corr(q_points, system, traj, formfact_all):
 	"""get the intermediate scattering function [Nq, Nt] from the given trajectory for selected groups
