@@ -2,7 +2,7 @@ import sys
 import numpy as np
 import MDAnalysis as mda
 
-sys.path.insert(0, "../")
+sys.path.insert(0, "../../../")
 from srcs.q_gen import get_q_points_plane, get_q_points_on_principal_axis, get_binning_averages_ttc
 from srcs.calc import get_ttc
 
@@ -26,7 +26,7 @@ if __name__ == '__main__':
 	# gen q-points and calculate two-time correlation
 
 	####################################################################### do xy plane
-	q_points = get_q_points_plane(np.array([bx, by, bz]), q_end, plane='xy')
+	_,_,q_points = get_q_points_plane(np.array([bx, by, bz]), q_end, plane='xy')
 	q_points_1, q_points_2 = get_q_points_on_principal_axis(q_points, qTarget=7.6, dq=0.4, dtheta=10, plane='xy')
 	# if generate q-points for a given bin
 	# q_points = get_q_points_angular_bin(box, q_min, q_max, Nbins, angle_deg, plane)

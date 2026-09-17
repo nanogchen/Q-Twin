@@ -10,7 +10,7 @@ conda activate qtwin
 <summary><b>Click to view the installation logs</b></summary>
 
 ```text
-guangc@login26:/pscratch/sd/g/guangc/q-twin> conda create --name qtwin --file requirements.txt
+> conda create --name qtwin --file requirements.txt
 Retrieving notices: done
 Channels:
  - conda-forge
