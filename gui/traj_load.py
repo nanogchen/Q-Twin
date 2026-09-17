@@ -44,7 +44,7 @@ def get_example_list():
     return []
 
 @st.cache_resource
-def load_universe_web(topo, traj, atom_style_str, format_str, topology_format_str):
+def load_universe_web_deprecated(topo, traj, atom_style_str, format_str, topology_format_str):
     if topo and traj:
         # MDAnalysis needs file paths, so we save uploaded bytes to temp files
         with tempfile.NamedTemporaryFile(suffix=topo.name, delete=False) as tmp_topo:
@@ -98,7 +98,7 @@ def load_traj():
     # Toggle for Example Mode
     # use_example = st.toggle("💡 Use Example Trajectory", value=False)
     mode = st.radio("Select Data Source:", ["Manual Upload", "Pre-installed Examples"], horizontal=True)
-    lmp_traj = ('.dump', '.lammpstraj', '.lammps')
+    lmp_traj_exts = ('.dump', '.lammpstraj', '.lammps', '.lammpsdump')
 
     if mode == "Pre-installed Examples":
         examples = get_example_list()
@@ -115,47 +115,87 @@ def load_traj():
                 traj_file = st.selectbox("Choose trajectory (XTC/DCD/GRO/DATA/LAMMPSTRAJ) to analyze:", list_files(ex_path))
 
             if topo_file and traj_file:
-                if topo_file.lower().endswith('.data') and traj_file.lower().endswith('.data'):
-                    st.warning("Topology file and trajectory files cannot be both data file. Will use data file only")
-                    topology_format_str = "DATA"
-                    format_str = "DATA"
-                elif topo_file.lower().endswith('.data') and traj_file.lower().endswith(lmp_traj):
-                    topology_format_str = "DATA"
-                    format_str = "LAMMPSDUMP"
-                elif topo_file.lower().endswith('.dump') and traj_file.lower().endswith(lmp_traj):
-                    st.warning("Topology file and trajectory files cannot be both dump file. Will use dump file only")
-                    topology_format_str = None
-                    format_str = "LAMMPSDUMP"
-                else:
-                    # st.error("Missing typical file types in this data folder.")
-                    # other format: gro etc.
-                    format_str = None
-                    topology_format_str = None
+                topo_ext = os.path.splitext(topo_file)[1].lower()
+                traj_ext = os.path.splitext(traj_file)[1].lower()
 
-                if topo_file.lower().endswith('.data') or traj_file.lower().endswith(lmp_traj):
-                    atom_style_str = st.text_input("Atom style for LAMMPS dump/data file", value="id type x y z", help="LAMMPS dump/data file format")
-                else:
-                    atom_style_str = None
-                
-                st.session_state.input['topo_file'] = topo_file
-                st.session_state.input['traj_file'] = traj_file
+                topo_path = os.path.join(ex_path, topo_file)
+                traj_path = os.path.join(ex_path, traj_file)
+
+                # Determine atom_style if any LAMMPS file is present
+                is_lammps = (
+                    topo_ext in [".data"] + list(lmp_traj_exts)
+                    or traj_ext in [".data"] + list(lmp_traj_exts)
+                )
+                atom_style_str = None
+                if is_lammps:
+                    atom_style_str = st.text_input(
+                        "Atom style for LAMMPS dump/data file",
+                        value="id type x y z",
+                        help="Specify LAMMPS column mapping (e.g. 'id type x y z' or 'full')",
+                    )
+
+                st.session_state.input["topo_file"] = topo_file
+                st.session_state.input["traj_file"] = traj_file
+
                 if st.button("🚀 Load Example"):
-                    if format_str is not None: # lmp
-                        u = mda.Universe(os.path.join(ex_path, topo_file), 
-                                         os.path.join(ex_path, traj_file),
-                                         atom_style = atom_style_str, 
-                                         format=format_str, 
-                                         topology_format=topology_format_str)
-                    else: # other than lmp
-                        u = mda.Universe(os.path.join(ex_path, topo_file), 
-                                         os.path.join(ex_path, traj_file),
-                                         atom_style = atom_style_str, 
-                                         format=topology_format_str, 
-                                         topology_format=topology_format_str)
-                    st.session_state.u = u
-                    st.success(f"Example files successfully loaded!")
-            else:
-                st.error("Missing necessary files in this data folder.")
+                    try:
+                        # Case 1: Both files are .data -> Single-frame data Universe
+                        if topo_ext == ".data" and traj_ext == ".data":
+                            st.warning(
+                                "Both files are DATA files. Loading single topology file only."
+                            )
+                            u = mda.Universe(
+                                topo_path,
+                                topology_format="DATA",
+                                format="DATA",
+                                atom_style=atom_style_str,
+                            )
+
+                        # Case 2: Standard LAMMPS workflow -> .data topology + dump trajectory
+                        elif topo_ext == ".data" and traj_ext in lmp_traj_exts:
+                            u = mda.Universe(
+                                topo_path,
+                                traj_path,
+                                topology_format="DATA",
+                                format="LAMMPSDUMP",
+                                atom_style=atom_style_str,
+                            )
+
+                        # Case 3: Both files are dump -> Single dump trajectory Universe
+                        elif topo_ext in lmp_traj_exts and traj_ext in lmp_traj_exts:
+                            st.warning(
+                                "Both files are dump trajectories. Loading trajectory dump only."
+                            )
+                            u = mda.Universe(
+                                traj_path,
+                                format="LAMMPSDUMP",
+                                atom_style=atom_style_str,
+                            )
+
+                        # Case 4: Reverse order input (.dump in box 1, .data in box 2)
+                        elif topo_ext in lmp_traj_exts and traj_ext == ".data":
+                            st.info(
+                                "Detected DATA file in trajectory slot. Inverting roles."
+                            )
+                            u = mda.Universe(
+                                traj_path,
+                                topo_path,
+                                topology_format="DATA",
+                                format="LAMMPSDUMP",
+                                atom_style=atom_style_str,
+                            )
+
+                        # Case 5: Standard Bio / General formats (PDB, GRO, XTC, DCD, etc.)
+                        else:
+                            u = mda.Universe(topo_path, traj_path)
+
+                        st.session_state.u = u
+                        st.success(
+                            f"Successfully loaded {len(u.atoms)} atoms and {len(u.trajectory)} frame(s)!"
+                        )
+
+                    except Exception as e:
+                        st.error(f"MDAnalysis failed to load files: {str(e)}")
         else:
             st.error("Example files not found in the 'data' directory.")
             
@@ -167,35 +207,135 @@ def load_traj():
         with col2:
             traj_file = st.file_uploader("Upload trajectory (XTC/DCD/GRO/DATA/LAMMPSTRAJ)", type=['xtc', 'dcd', 'gro', 'data', 'lammpstraj', '.dump', '.lammps'])
         
+        def load_universe_web(topo_upload, traj_upload, mode, atom_style=None):
+            """Saves Streamlit uploaded buffer(s) to temporary files with matching extensions,
+
+            constructs the MDAnalysis.Universe, and ensures temporary files are cleaned up.
+            """
+            temp_files = []
+
+            def save_temp(uploaded_obj):
+                ext = os.path.splitext(uploaded_obj.name)[1].lower()
+                tfile = tempfile.NamedTemporaryFile(delete=False, suffix=ext)
+                tfile.write(uploaded_obj.getbuffer())
+                tfile.flush()
+                tfile.close()
+                temp_files.append(tfile.name)
+                return tfile.name
+
+            try:
+                if mode == "single_topo":
+                    # Only topo file is loaded (e.g. standalone DATA file)
+                    path = save_temp(topo_upload)
+                    u = mda.Universe(
+                        path,
+                        topology_format="DATA",
+                        format="DATA",
+                        atom_style=atom_style,
+                    )
+
+                elif mode == "single_traj":
+                    # Only traj file is loaded (e.g. standalone DUMP file)
+                    path = save_temp(traj_upload)
+                    u = mda.Universe(path, format="LAMMPSDUMP", atom_style=atom_style)
+
+                elif mode == "lammps_pair":
+                    # DATA topology + DUMP trajectory
+                    t_path = save_temp(topo_upload)
+                    tr_path = save_temp(traj_upload)
+                    u = mda.Universe(
+                        t_path,
+                        tr_path,
+                        topology_format="DATA",
+                        format="LAMMPSDUMP",
+                        atom_style=atom_style,
+                    )
+
+                elif mode == "lammps_pair_inverted":
+                    # User uploaded DUMP into slot 1 and DATA into slot 2
+                    tr_path = save_temp(topo_upload)
+                    t_path = save_temp(traj_upload)
+                    u = mda.Universe(
+                        t_path,
+                        tr_path,
+                        topology_format="DATA",
+                        format="LAMMPSDUMP",
+                        atom_style=atom_style,
+                    )
+
+                else:
+                    # Standard formats: PDB + XTC, GRO + DCD, etc.
+                    t_path = save_temp(topo_upload)
+                    tr_path = save_temp(traj_upload)
+                    u = mda.Universe(t_path, tr_path)
+
+                return u
+
+            finally:
+                # Remove temporary disk artifacts after Universe construction
+                for temp_path in temp_files:
+                    if os.path.exists(temp_path):
+                        os.remove(temp_path)
+
         if topo_file and traj_file:
-            if topo_file.name.lower().endswith('.data') and traj_file.name.lower().endswith('.data'):
-                st.warning("Topology file and trajectory files cannot be both data file. Will use data file only")
-                topology_format_str = "DATA"
-                format_str = "DATA"
-            elif topo_file.name.lower().endswith('.data') and traj_file.name.lower().endswith(lmp_traj):
-                topology_format_str = "DATA"
-                format_str = "LAMMPSDUMP"
-            elif topo_file.name.lower().endswith('.dump') and traj_file.name.lower().endswith(lmp_traj):
-                st.warning("Topology file and trajectory files cannot be both dump file. Will use dump file only")
-                topology_format_str = None
-                format_str = "LAMMPSDUMP"
-            else:
-                # st.error("Missing typical file types in this data folder.")
-                # other format: gro etc.
-                format_str = None
-                topology_format_str = None
+            topo_name = topo_file.name.lower()
+            traj_name = traj_file.name.lower()
 
-            if topo_file.name.lower().endswith('.data') or traj_file.name.lower().endswith(lmp_traj):
-                atom_style_str = st.text_input("Atom style for LAMMPS dump file", value="id type x y z", help="LAMMPS dump file format")
-            else:
-                atom_style_str = None
+            topo_ext = os.path.splitext(topo_name)[1]
+            traj_ext = os.path.splitext(traj_name)[1]
 
-            st.session_state.input['topo_file'] = topo_file.name.lower()
-            st.session_state.input['traj_file'] = traj_file.name.lower()
-            st.session_state.input['atom_style'] = atom_style_str
+            # Check if LAMMPS inputs are present to determine whether atom_style input is needed
+            is_lammps = (
+                topo_ext in [".data"] + list(lmp_traj_exts)
+                or traj_ext in [".data"] + list(lmp_traj_exts)
+            )
+
+            atom_style_str = None
+            if is_lammps:
+                atom_style_str = st.text_input(
+                    "Atom style for LAMMPS dump/data file",
+                    value="id type x y z",
+                    help="Specify LAMMPS column mapping (e.g., 'id type x y z' or 'full')",
+                )
+
+            # Determine resolution mode
+            if topo_ext == ".data" and traj_ext == ".data":
+                st.warning(
+                    "Both files are DATA files. The trajectory slot will be ignored; loading DATA file only."
+                )
+                mode = "single_topo"
+
+            elif topo_ext in lmp_traj_exts and traj_ext in lmp_traj_exts:
+                st.warning(
+                    "Both files are dump trajectories. The coordinate slot will be ignored; loading trajectory dump only."
+                )
+                mode = "single_traj"
+
+            elif topo_ext == ".data" and traj_ext in lmp_traj_exts:
+                mode = "lammps_pair"
+
+            elif topo_ext in lmp_traj_exts and traj_ext == ".data":
+                st.info("Detected DATA file in trajectory slot. Inverting roles.")
+                mode = "lammps_pair_inverted"
+
+            else:
+                mode = "standard"
+
+            st.session_state.input["topo_file"] = topo_name
+            st.session_state.input["traj_file"] = traj_name
+            st.session_state.input["atom_style"] = atom_style_str
+
             if st.button("🚀 Load System"):
-                # (Your existing tempfile logic here...)
-                st.session_state.u = load_universe_web(topo_file, traj_file, atom_style_str, format_str, topology_format_str)
+                try:
+                    u = load_universe_web(
+                        topo_file, traj_file, mode, atom_style=atom_style_str
+                    )
+                    st.session_state.u = u
+                    st.success(
+                        f"System loaded successfully! ({len(u.atoms)} atoms, {len(u.trajectory)} frame(s))"
+                    )
+                except Exception as e:
+                    st.error(f"MDAnalysis failed to load system: {str(e)}")
 
     # Display system info if loaded
     if st.session_state.u:
