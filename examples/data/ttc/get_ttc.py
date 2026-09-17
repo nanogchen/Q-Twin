@@ -42,7 +42,7 @@ if __name__ == '__main__':
 	np.save(f"c2_ttc_xy2.npy", c2)
 
 	####################################################################### do xz plane
-	q_points = get_q_points_plane(np.array([bx, by, bz]), q_end, plane='xz')
+	_,_,q_points = get_q_points_plane(np.array([bx, by, bz]), q_end, plane='xz')
 	q_points_1, q_points_2 = get_q_points_on_principal_axis(q_points, qTarget=7.6, dq=0.4, dtheta=10, plane='xz')
 
 	ssf, I_q_t1_t2 = get_ttc(q_points_1, system, u.trajectory[Fr_start:Fr_stop+1:Fr_step], formfact_all, unit_conv)
