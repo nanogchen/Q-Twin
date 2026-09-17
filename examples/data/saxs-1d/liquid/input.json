@@ -1,0 +1,12 @@
+{
+    "topo_file": "unary_liquid.data",
+    "traj_file": "unary_liquid.lammpstraj",
+    "length_unit": "LJ",
+    "q_end": 15.0,
+    "max_q_points": 1500,
+    "frame_start": 0,
+    "frame_end": 500,
+    "frame_step": 1,
+    "traj_dt": 1.0,
+    "dq_values": 0.623703122138977
+}

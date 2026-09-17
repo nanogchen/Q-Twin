@@ -2,5 +2,6 @@ data/*/*.lock
 data/*/*.npz
 gui/__pycache__/
 */__pycache__/
-examples/data/*
+examples/data/*/*.npy
+examples/data/*/*/*.npy
 examples/figs/*

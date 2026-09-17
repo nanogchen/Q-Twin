@@ -1,0 +1,13 @@
+{
+    "topo_file": "eq.data",
+    "traj_file": "t1.5_sampling.lammpstraj",
+    "atom_style": "id type x y z",
+    "length_unit": "LJ",
+    "q_end": 15.0,
+    "max_q_points": 1500,
+    "frame_start": 0,
+    "frame_end": 500,
+    "frame_step": 1,
+    "traj_dt": 1.0,
+    "dq_values": 0.4493357837200165
+}
