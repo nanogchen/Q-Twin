@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 import sys
 sys.path.insert(0, "../")
 from gui.fileIO import create_zip_download
-from srcs.q_gen import get_binning_averages_ttc
+from srcs.q_gen import get_binning_averages_ttc,get_q_points_angular_bin
 from srcs.calc import get_ttc
 
 def ttc(u):    
@@ -40,17 +40,24 @@ def ttc(u):
     with col4:
         angle_deg = st.number_input("scattering angle (-180,180]", value=90.0, min_value=-180.0, max_value=180.0, step=1.0, format="%.1f")
     with col5:
-        q_i = st.number_input("wavenumber (Å⁻¹ or $\\sigma$⁻¹)", value=0.95, min_value=float(dq)*2, step=float(dq), format="%.2f")
+        q_i = st.number_input("wavenumber (Å⁻¹ or $\\sigma$⁻¹)", value=float(dq)*4, min_value=float(dq)*2, step=float(dq), format="%.2f")
     
     # get ttc: given a q-point and direction (like saxs2d), i.e., localQbin    
     system = u.select_atoms(ag_str)
     formfact_all = np.array([1.0 for _ in range(system.atoms.n_atoms)])
-    q_points_bin, ssf, I_q_t1_t2 = get_ttc(np.array([bx, by, bz]), q_i-0.5*dq, q_i+0.5*dq, Nbins, angle_deg,
+    q_points = get_q_points_angular_bin(np.array([bx, by, bz]), q_i-0.5*dq, q_i+0.5*dq, Nbins, angle_deg, st.session_state.input['ttc_2d_plane'])
+    
+    if st.session_state.input['length_unit'] == "LJ" and st.session_state.input["traj_file"].endswith(".xtc"):
+        unit_conv = 10.0
+    else:
+        unit_conv = 1.0
+    ssf, I_q_t1_t2 = get_ttc(q_points,
                             system, u.trajectory[Fr_start:Fr_end:Fr_step], 
-                            formfact_all, st.session_state.input['ttc_2d_plane'])
+                            formfact_all,
+                            unit_conv)
 
     # do q-average
-    qrc, c2 = get_binning_averages_ttc(q_points_bin, ssf, I_q_t1_t2, form="G")
+    qrc, c2 = get_binning_averages_ttc(q_points, ssf, I_q_t1_t2, form="G")
 
     # --- Download Button ---
     data_to_zip = {
