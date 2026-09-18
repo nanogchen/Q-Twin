@@ -21,6 +21,7 @@ nav:
   - Installation & Setup: installation.md
   - Usage Procedure & Example: workflow.md
   - API Reference: api.md
+  - Troubleshooting: troubleshooting.md
 
 markdown_extensions:
   - pymdownx.highlight:
