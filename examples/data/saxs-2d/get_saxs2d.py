@@ -9,7 +9,7 @@ from srcs.calc import get_scattering_image
 
 if __name__ == '__main__':
 
-	traj_file = "/pscratch/sd/g/guangc/shear/vf60_L50/rate1.0/shear_rate1.xtc" # a very large file
+	traj_file = "shear_rate1.xtc" # a very large file
 	unit_conv = 10.0 # unit conversion
 	Fr_start = 2000
 	Fr_step = 1
