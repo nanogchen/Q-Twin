@@ -1,6 +1,6 @@
 {
-    "topo_file": "eq.data",
-    "traj_file": "t1.5_sampling.lammpstraj",
+    "topo_file": "unary_scf.data",
+    "traj_file": "unary_scf.lammpstraj",
     "atom_style": "id type x y z",
     "length_unit": "LJ",
     "q_end": 15.0,
