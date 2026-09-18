@@ -84,7 +84,7 @@ def get_sf_decomposition(q_points, ag1, ag2, traj):
 	Natoms = ag1.atoms.n_atoms + ag2.atoms.n_atoms
 	return sf_AA/Natoms, 0.5*sf_AB/Natoms, sf_BB/Natoms
 
-def get_scattering_image(box, q_max, system, traj, plane='xz'):
+def get_scattering_image(box, q_max, system, traj, plane='xz', unit_conv=1.0):
 	"""get the 1d and 2d static structur factor from the given trajectory for selected groups in a plane
 
 	Args:
@@ -93,6 +93,7 @@ def get_scattering_image(box, q_max, system, traj, plane='xz'):
 		system (AtomGroup): the selected groups for analysis
 		traj (Universe.trajectory): the whole trajectory
 		plane (str): scattering plane xy/xz/yz
+		unit_conv (float): unit conversion factor
 	
 	Returns:
 		q_points (np.array): the q-points
@@ -111,7 +112,7 @@ def get_scattering_image(box, q_max, system, traj, plane='xz'):
 	ifr=0    
 	for _ in traj:
 
-		coords = system.positions
+		coords = system.positions / unit_conv
 	
 		# cal sf. at each q-points
 		rho_q = get_rho_q_noFF(coords, q_points)
