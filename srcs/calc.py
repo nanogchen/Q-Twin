@@ -112,7 +112,9 @@ def get_scattering_image(box, q_max, system, traj, plane='xz', unit_conv=1.0):
 	ifr=0    
 	for _ in traj:
 
-		coords = system.positions / unit_conv
+		coords = np.ascontiguousarray(
+			u.atoms.positions / unit_conv, dtype=np.float64
+		)
 	
 		# cal sf. at each q-points
 		rho_q = get_rho_q_noFF(coords, q_points)
