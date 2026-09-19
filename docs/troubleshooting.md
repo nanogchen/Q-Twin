@@ -1,6 +1,6 @@
 ## Issues and Caveats
 
-#### Network issue
+#### Network Issue
 
 1. go to `chrome://net-internals/#sockets`, and click `Flush socket pools`.
 2. go to `chrome://net-internals/#dns`, and click `Clear host cache`.
@@ -9,7 +9,7 @@
 
 ---
 
-#### Saxs2d plotting issue
+#### Saxs2d Plotting Caveat
 
 In the development version of the code, the 2D SAXS scattering data have the shape  `[Nt, Np, Np]`. Accordingly, the averaging was performed along the first axis (`axis=0`), as reflected in the data uploaded to Zenodo and in `figs.ipynb`.
 
@@ -23,3 +23,8 @@ The `atom_style` setting in trajectory loading is critical for correctly extract
 
 --- 
 
+#### q-Averaging Caveat
+
+The number of q-bins, or the value of wavenumber step, used for q-averaging can affect the exact values of the resulting wavenumber array. As requested by the reviewer, the default setting in the GUI and the saxs2d example has been set to `int(q_max / round(1.5 * 2 * np.pi / L, 2))`.
+
+Note that this setting is not incorrect; rather, it is an adjustable parameter that controls the q-binning and does not affect the underlying results.
