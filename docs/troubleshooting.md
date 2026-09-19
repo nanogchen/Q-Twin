@@ -11,9 +11,9 @@
 
 #### Saxs2d Plotting Caveat
 
-In the development version of the code, the 2D SAXS scattering data have the shape  `[Nt, Np, Np]`. Accordingly, the averaging was performed along the first axis (`axis=0`), as reflected in the data uploaded to Zenodo and in `figs.ipynb`.
+In the development version of the code, the 2D SAXS scattering data have the shape  `[Nt, Nq, Nq]`. Accordingly, the averaging was performed along the first axis (`axis=0`), as reflected in the data uploaded to Zenodo and in `figs.ipynb`.
 
-In the most recent version, the data shape has been changed to `[Np, Np, Nt]`. Therefore, the averaging should now be performed along the last axis (`axis=-1`).
+In the most recent version, the data shape has been changed to `[Nq, Nq, Nt]`. Therefore, the averaging should now be performed along the last axis (`axis=-1`).
 
 ---
 
