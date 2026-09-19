@@ -27,15 +27,16 @@ def get_q_points_plane(box, q_max, plane='xz'):
 		q_points (np.array): the generated q-points in a plane
 	"""
 
-	idx_list=idx_dict[plane]
+	ax1, ax2 = idx_dict[plane]
 
-	box2 = box[idx_list]
-	dq = np.diagflat(2*np.pi/box2)
-	N = np.ceil(q_max/np.diag(dq)).astype(int)
+	dq1 = 2.0 * np.pi / box[ax1]
+	dq2 = 2.0 * np.pi / box[ax2]
 
-	# form the q-points in each of the two direction
-	q1 = np.arange(-N[0], N[0]+1) * dq[0,0] # 2*N+1
-	q2 = np.arange(-N[1], N[1]+1) * dq[1,1]
+	N1 = int(np.ceil(q_max / dq1))
+	N2 = int(np.ceil(q_max / dq2))
+
+	q1 = np.arange(-N1, N1 + 1) * dq1  # e.g., qx
+	q2 = np.arange(-N2, N2 + 1) * dq2  # e.g., qz or qy
 
 	# the q-points
 	q_grid = np.zeros((len(q1), len(q2), 3), dtype=np.float64)
