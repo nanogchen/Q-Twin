@@ -38,10 +38,11 @@ def get_q_points_plane(box, q_max, plane='xz'):
 	q2 = np.arange(-N[1], N[1]+1) * dq[1,1]
 
 	# the q-points
-	qpts1, qpts2 = np.meshgrid(q1, q2)
-	q_points2 = np.stack((qpts1.ravel(), qpts2.ravel()), axis=-1)
+	qpts1, qpts2 = np.meshgrid(q1, q2, indexing='ij') #so qpts1.shape == (len(q1), len(q2))
+	q_points2 = np.column_stack((qpts1.ravel(), qpts2.ravel()))
 	q_points = np.zeros((q_points2.shape[0], 3))
-	q_points[:, idx_list] = q_points2
+	q_points[:, idx_list[0]] = q_points2[:, 0]
+	q_points[:, idx_list[1]] = q_points2[:, 1]
 
 	return q1,q2,q_points
 
