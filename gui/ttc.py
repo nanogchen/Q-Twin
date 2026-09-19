@@ -16,7 +16,11 @@ def ttc(u):
     Fr_start = st.session_state.input['frame_start']
     Fr_end = st.session_state.input['frame_end']
     Fr_step = st.session_state.input['frame_step']
-    bx, by, bz = u.dimensions[:3]
+    if st.session_state.input['length_unit'] == "LJ" and st.session_state.input["traj_file"].endswith(".xtc"):
+        unit_conv = 10.0
+    else:
+        unit_conv = 1.0
+    bx, by, bz = u.dimensions[:3] / unit_conv
     L = max(bx, by, bz)
     dq = round(2*np.pi/L, 2)
 
@@ -47,10 +51,7 @@ def ttc(u):
     formfact_all = np.array([1.0 for _ in range(system.atoms.n_atoms)])
     q_points = get_q_points_angular_bin(np.array([bx, by, bz]), q_i-0.5*dq, q_i+0.5*dq, Nbins, angle_deg, st.session_state.input['ttc_2d_plane'])
     
-    if st.session_state.input['length_unit'] == "LJ" and st.session_state.input["traj_file"].endswith(".xtc"):
-        unit_conv = 10.0
-    else:
-        unit_conv = 1.0
+    # calc
     ssf, I_q_t1_t2 = get_ttc(q_points,
                             system, u.trajectory[Fr_start:Fr_end:Fr_step], 
                             formfact_all,

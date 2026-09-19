@@ -156,11 +156,17 @@ def load_traj():
                 )
                 atom_style_str = None
                 if is_lammps:
-                    atom_style_str = st.text_input(
-                        "Atom style for LAMMPS dump/data file",
-                        value="id type x y z",
-                        help="Specify LAMMPS column mapping (e.g. 'id type x y z' or 'full')",
-                    )
+                    col1, col2 = st.columns([3, 2], vertical_alignment="bottom")
+                    with col1:                
+                        atom_style_str = st.text_input(
+                            "Atom style for LAMMPS dump/data file",
+                            value="id type x y z",
+                            help="Specify LAMMPS column mapping (e.g. 'id type x y z', 'id type mass density x y z')",
+                        )
+                    with col2: 
+                        st.warning(
+                                    "Be sure to specify the correct data columns for proper extraction of the particle coordinates!"
+                                )
 
                 st.session_state.input["topo_file"] = topo_file
                 st.session_state.input["traj_file"] = traj_file
