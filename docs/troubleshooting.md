@@ -25,6 +25,6 @@ The `atom_style` setting in trajectory loading is critical for correctly extract
 
 #### q-Averaging Caveat
 
-The number of q-bins, or the value of wavenumber step, used for q-averaging can affect the exact values of the resulting wavenumber array. As requested by the reviewer, the default setting in the GUI and the saxs2d example has been set to `int(q_max / round(1.5 * 2 * np.pi / L, 2))`.
+The number of q-bins, or the value of wavenumber step, used for q-averaging can affect the exact values of the resulting wavenumber array. As requested by the reviewer, the default setting in the GUI and the saxs2d example has been set to `int(q_max / round(1.5 * 2 * np.pi / L, 2))` (i.e., the q-binsize is set to 1.5 times the minimum q.).
 
 Note that this setting is not incorrect; rather, it is an adjustable parameter that controls the q-binning and does not affect the underlying results.
