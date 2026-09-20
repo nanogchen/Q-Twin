@@ -9,11 +9,16 @@ from srcs.calc import get_scattering_image
 
 if __name__ == '__main__':
 
-	traj_file = "shear_rate1.xtc" # a very large file
-	unit_conv = 10.0 # unit conversion
-	Fr_start = 2000
+	# traj_file = "shear_rate1.xtc" # a very large file	
+	# unit_conv = 10.0 # unit conversion
+	# Fr_start = 2000
+	# Fr_step = 1
+	# Fr_stop = 3000
+	traj_file = "../../../../data/colloids/L30_vf60_rate1.0.data" # a single frame for testing
+	unit_conv = 1.0
+	Fr_start = 0
 	Fr_step = 1
-	Fr_stop = 3000
+	Fr_stop = 0
 	q_max = 20
 
 	u = mda.Universe(traj_file)
