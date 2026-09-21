@@ -1,4 +1,4 @@
-## Installation
+## Local Installation
 
 The `Q-Twin` software can be installed using conda. Assuming conda is already installed, run the following command in a terminal:
 ```bash
@@ -530,3 +530,6 @@ conda activate qtwin
 ```
 
 For a tutorial on loading trajectories, performing analyses, and running the analysis from the command line, see the [Usage Procedure & Examples](../workflow) section.
+
+## Install-Free Cloud Usage
+A cloud-based GUI without installation is available at [https://q-twin.streamlit.app/](https://q-twin.streamlit.app/). 
