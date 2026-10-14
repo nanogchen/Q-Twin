@@ -99,7 +99,7 @@ def saxs2d(u):
             zmin=v_min,
             zmax=v_max,
             connectgaps=True,
-            zsmooth="best",
+            zsmooth=False, # no smooth/interpolation"best",
             colorscale="jet",
             colorbar=dict(
                 title=dict(text="<i>S</i>(<b>q</b>)", side="right"),
