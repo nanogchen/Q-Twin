@@ -66,7 +66,7 @@ def draw_sidebar_footer():
         with col2:
             st.link_button("Tutorials", "https://nanogchen.github.io/Q-Twin/workflow/", use_container_width=True)
             
-        st.link_button("📖 Read The Paper", "https://doi.org/...", use_container_width=True)
+        st.link_button("📖 Read The Paper", "https://doi.org/10.1039/d6dd00457a", use_container_width=True)
 
 draw_sidebar_footer()
 
